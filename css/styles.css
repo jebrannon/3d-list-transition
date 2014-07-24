@@ -11,109 +11,107 @@ body, h1, h2, h3, p {
 #section ul,
 #section li {
 	list-style: none;
-	/*margin: 0;*/
+	margin: 0;
 	padding: 0;
 }
+#section .my-list-item {
 
-/* simple */
-		.my-list-item {
+	float: left;
+	margin: 10px;
 
-			float: left;
-			margin: 10px;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	-ms-perspective: 1000;
+	perspective: 1000;
 
-			-webkit-perspective: 1000;
-			-moz-perspective: 1000;
-			-ms-perspective: 1000;
-			perspective: 1000;
+	-ms-transform: perspective(1000px);
+	-moz-transform: perspective(1000px);
 
-			-ms-transform: perspective(1000px);
-			-moz-transform: perspective(1000px);
-    			-moz-transform-style: preserve-3d; 
-    			-ms-transform-style: preserve-3d;
-		}
+	-moz-transform-style: preserve-3d; 
+	-ms-transform-style: preserve-3d;
+}
 
 
-	/* START: Accommodating for IE */
-	.my-list-item:hover .back, .my-list-item.hover .back {
-    -webkit-transform: rotateY(0deg);
-    -moz-transform: rotateY(0deg);
-    -o-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-	}
+/*  START: Accommodating for IE  */
+#section .my-list-item.focus .back {
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+	-o-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	transform: rotateY(0deg);
+}
 
-	.my-list-item:hover .front {
-	    -webkit-transform: rotateY(180deg);
-	    -moz-transform: rotateY(180deg);
-	    -o-transform: rotateY(180deg);
-	    transform: rotateY(180deg);
-	}
-		
-		/* END: Accommodating for IE */
+#section .my-list-item.focus .front {
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+/*  END: Accommodating for IE  */
 
-		.my-list-item,
-		.my-list-item .front,
-		.my-list-item .back {
-			width: 200px;
-			height: 200px;
-		}
+#section .my-list-item,
+#section .front,
+#section .back {
+	width: 200px;
+	height: 200px;
+}
 
-		.my-list-inner {
-			-webkit-transition: 0.6s;
-			-webkit-transform-style: preserve-3d;
-			-ms-transition: 0.6s;
+#section .my-list-inner {
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	-ms-transition: 0.6s;
 
-			-moz-transition: 0.6s;
-			-moz-transform: perspective(1000px);
-			-moz-transform-style: preserve-3d;
-			-ms-transform-style: preserve-3d;
+	-moz-transition: 0.6s;
+	-moz-transform: perspective(1000px);
+	-moz-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
 
-			transition: 0.6s;
-			transform-style: preserve-3d;
+	transition: 0.6s;
+	transform-style: preserve-3d;
 
-			position: relative;
-		}
+	pointer-events: none;
+	position: relative;
+}
 
-		.front, .back {
-			-webkit-backface-visibility: hidden;
-			-moz-backface-visibility: hidden;
-			-ms-backface-visibility: hidden;
-			backface-visibility: hidden;
+#section .front,
+#section .back {
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	-ms-backface-visibility: hidden;
+	backface-visibility: hidden;
 
-		    -webkit-transition: 1s;
-		    -webkit-transform-style: preserve-3d;
+	-webkit-transition: 1s;
+	-webkit-transform-style: preserve-3d;
 
-		    -moz-transition: 1s;
-		    -moz-transform-style: preserve-3d;
+	-moz-transition: 1s;
+	-moz-transform-style: preserve-3d;
 
-		    -o-transition: 1s;
-		    -o-transform-style: preserve-3d;
+	-o-transition: 1s;
+	-o-transform-style: preserve-3d;
 
-		    -ms-transition: 1s;
-		    -ms-transform-style: preserve-3d;
+	-ms-transition: 1s;
+	-ms-transform-style: preserve-3d;
 
-		    transition: 1s;
-		    transform-style: preserve-3d;
+	transition: 1s;
+	transform-style: preserve-3d;
 
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
-		.front {
-			-webkit-transform: rotateY(0deg);
-			-ms-transform: rotateY(0deg);
-			background: red;
-			z-index: 2;
-		}
+#section .front {
+	-webkit-transform: rotateY(0deg);
+	-ms-transform: rotateY(0deg);
+	background: red;
+	z-index: 2;
+}
 
-		.back {
-			background: blue;
-			-webkit-transform: rotateY(-180deg);
-		    -moz-transform: rotateY(-180deg);
-		    -o-transform: rotateY(-180deg);
-		    -ms-transform: rotateY(-180deg);
-		    transform: rotateY(-180deg);
-		}
-
-	
+#section .back {
+	background: blue;
+	-webkit-transform: rotateY(-180deg);
+	-moz-transform: rotateY(-180deg);
+	-o-transform: rotateY(-180deg);
+	-ms-transform: rotateY(-180deg);
+	transform: rotateY(-180deg);
+}
