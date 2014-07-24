@@ -14,10 +14,21 @@ body, h1, h2, h3, p {
 	margin: 0;
 	padding: 0;
 }
+
 #section .my-list-item {
 
-	float: left;
-	margin: 10px;
+	-webkit-transition: 1s;
+	-webkit-transform-style: preserve-3d;
+	
+	-moz-transition: 1s;
+	-moz-transform: perspective(1000px);
+	-moz-transform-style: preserve-3d;
+
+	-ms-transition: 1s;
+	-ms-transform-style: preserve-3d;
+
+	transition: 1s;
+	transform-style: preserve-3d;
 
 	-webkit-perspective: 1000;
 	-moz-perspective: 1000;
@@ -47,30 +58,52 @@ body, h1, h2, h3, p {
 	-o-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 }
+
+#section .my-list-item.focus {
+	/*width: 400px;*/
+	/*height: 500px;*/
+	z-index: 100;
+}
+
 /*  END: Accommodating for IE  */
 
-#section .my-list-item,
-#section .front,
-#section .back {
+#section .small {
+	height: 100px;
+	width: 100px;
+}
+
+#section .large {
+	height: 100px;
 	width: 200px;
-	height: 200px;
+}
+
+#section .front,
+#section .back,
+#section .my-list-inner {
+	height: 100%;
+	width: 100%;
 }
 
 #section .my-list-inner {
-	-webkit-transition: 0.6s;
+	-webkit-transition: 1s;
 	-webkit-transform-style: preserve-3d;
-	-ms-transition: 0.6s;
-
-	-moz-transition: 0.6s;
+	
+	-moz-transition: 1s;
 	-moz-transform: perspective(1000px);
 	-moz-transform-style: preserve-3d;
+
+	-ms-transition: 1s;
 	-ms-transform-style: preserve-3d;
 
-	transition: 0.6s;
+	transition: 1s;
 	transform-style: preserve-3d;
 
 	pointer-events: none;
 	position: relative;
+
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 #section .front,

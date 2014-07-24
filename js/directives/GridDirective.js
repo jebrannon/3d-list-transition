@@ -2,28 +2,59 @@ app.directive('ngGrid', ['$window', function($window) {
 	return {
 		restrict: 'A',
 		link: function(scope, elem, attrs) {
-			console.log(elem)
-
-
-			// var _$window = angular.element($window);
-			// var _$message = elem.find('.message');
-			// var _$loader = elem.find('.load-more');
-
-			// var _this = this;
-			// var _offset = elem.height() - _$window.height();
-			// var _trigger = _offset - (attrs.ngInfiniteScrollOffset ? attrs.ngInfiniteScrollOffset : 200);
-			// var _loading = false;
-			// var _loadCount = 0;
+			var _$window = angular.element($window);
+			var _memory = {x:0, y:0, w:0, h:0}
+			var _margin = 40;
+			var _open = false;
 
 			//  Methods
 			var handleEvent = function (e) {
 				var eventType = e.type ? e.type : e.name;
 				switch(eventType) {
 					case 'click':
-						// console.log(angular.element(e.target));
-						angular.element(e.target).toggleClass('focus');
+
+						var $el = angular.element(e.target);
+						$el.toggleClass('focus');
+						if (!_open) {
+							_open = true;
+							centralizeGridItem($el);
+						}
+						else {
+							_open = false;
+							closeGridItem($el);
+						}
+
 						break;
 				}
+			};
+			var centralizeGridItem = function ($el) {
+				_memory.x = $el.position().left;
+				_memory.y = $el.position().top;
+				_memory.w = $el.width();
+				_memory.h = $el.height();
+				var width = _$window.width() - (_margin * 2);
+				var height = _$window.height() - (_margin * 2);
+
+				$el.width(width);
+				$el.height(height);
+
+				$el.css({top: _margin});
+				$el.css({left: _margin});
+
+			};
+			var closeGridItem = function ($el) {
+				console.log('closeGridItem', $el)
+
+				// $el.css("height", null);
+				// $el.css("width", null);
+
+				$el.css({
+					width: _memory.w,
+					height: _memory.h,
+					top: _memory.y,
+					left: _memory.x
+				});
+
 			};
 			// var monitorScrollPosition = function () {
 			// 	if (_$window.scrollTop() >= _trigger) {

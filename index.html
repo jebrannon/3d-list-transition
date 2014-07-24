@@ -52,18 +52,28 @@
             </div>
         </noscript>
 
-        <div id="section" ng-grid>
+        <div id="section" class="js-masonry" data-masonry-options='{ "columnWidth": 100, "itemSelector": ".my-list-item" }' ng-grid>
             <ul class="my-list">
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
-                <li class="my-list-item"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
+                <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
             </ul>
         </div>
 
         <script  src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
+        <script src="js/libs/masonry.pkgd.min.js" type="text/javascript"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
         <script src="js/app.js" type="text/javascript"></script>
         <script src="js/controllers/PageController.js" type="text/javascript"></script>
