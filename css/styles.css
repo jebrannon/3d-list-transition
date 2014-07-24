@@ -3,31 +3,33 @@ body, h1, h2, h3, p {
 	padding: 0;
 }
 
-
-/* --- */
-
-#section {}
-
-#section ul,
-#section li {
+ul,
+li {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
+.disable {
+	pointer-events: none;
+}
+
+
+/* --- */
+
 #section .my-list-item {
 
-	-webkit-transition: 1s;
+	-webkit-transition: .75s;
 	-webkit-transform-style: preserve-3d;
 	
-	-moz-transition: 1s;
+	-moz-transition: .75s;
 	-moz-transform: perspective(1000px);
 	-moz-transform-style: preserve-3d;
 
-	-ms-transition: 1s;
+	-ms-transition: .75s;
 	-ms-transform-style: preserve-3d;
 
-	transition: 1s;
+	transition: .75s;
 	transform-style: preserve-3d;
 
 	-webkit-perspective: 1000;
@@ -60,8 +62,7 @@ body, h1, h2, h3, p {
 }
 
 #section .my-list-item.focus {
-	/*width: 400px;*/
-	/*height: 500px;*/
+	pointer-events: auto;
 	z-index: 100;
 }
 
@@ -85,17 +86,17 @@ body, h1, h2, h3, p {
 }
 
 #section .my-list-inner {
-	-webkit-transition: 1s;
+	-webkit-transition: .75s;
 	-webkit-transform-style: preserve-3d;
 	
-	-moz-transition: 1s;
+	-moz-transition: .75s;
 	-moz-transform: perspective(1000px);
 	-moz-transform-style: preserve-3d;
 
-	-ms-transition: 1s;
+	-ms-transition: .75s;
 	-ms-transform-style: preserve-3d;
 
-	transition: 1s;
+	transition: .75s;
 	transform-style: preserve-3d;
 
 	pointer-events: none;
@@ -113,19 +114,19 @@ body, h1, h2, h3, p {
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 
-	-webkit-transition: 1s;
+	-webkit-transition: .75s;
 	-webkit-transform-style: preserve-3d;
 
-	-moz-transition: 1s;
+	-moz-transition: .75s;
 	-moz-transform-style: preserve-3d;
 
-	-o-transition: 1s;
+	-o-transition: .75s;
 	-o-transform-style: preserve-3d;
 
-	-ms-transition: 1s;
+	-ms-transition: .75s;
 	-ms-transform-style: preserve-3d;
 
-	transition: 1s;
+	transition: .75s;
 	transform-style: preserve-3d;
 
 	position: absolute;
