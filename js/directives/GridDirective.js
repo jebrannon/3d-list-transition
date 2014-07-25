@@ -41,7 +41,7 @@ console.log('ngGrid');
 				_open = true;
 				elem.on(_transEndEventNames, handleEvent);
 
-				console.log($el[0])
+				console.log('element',$el[0])
 
 
 				$el.addClass('focus');
