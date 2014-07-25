@@ -17,7 +17,16 @@ li {
 
 /* --- */
 
+#section {
+	width: 400%;
+	background: grey;
+}
+
 #section .my-list-item {
+
+	padding: 5px;
+	position: absolute;
+
 
 	-webkit-transition: .75s;
 	-webkit-transform-style: preserve-3d;
@@ -42,8 +51,14 @@ li {
 
 	-moz-transform-style: preserve-3d; 
 	-ms-transform-style: preserve-3d;
-}
 
+
+	
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
 
 /*  START: Accommodating for IE  */
 #section .my-list-item.focus .back {
@@ -64,18 +79,19 @@ li {
 #section .my-list-item.focus {
 	pointer-events: auto;
 	z-index: 100;
+	/*position: fixed;*/
 }
 
 /*  END: Accommodating for IE  */
 
 #section .small {
-	height: 100px;
-	width: 100px;
+	height: 33%;
+	width: 66%;
 }
 
 #section .large {
-	height: 100px;
-	width: 200px;
+	height: 33%;
+	width: 33%;
 }
 
 #section .front,
