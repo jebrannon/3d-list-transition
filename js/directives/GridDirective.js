@@ -4,7 +4,7 @@ app.directive('ngGrid', ['$window', function($window) {
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
 			var _memory = {x:0, y:0, w:0, h:0}
-			var _margin = 40;
+			var _margin = 50;
 			var _open = false;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
 			var _items = [];
@@ -12,6 +12,8 @@ app.directive('ngGrid', ['$window', function($window) {
 
 			//  Methods
 			var handleEvent = function (e) {
+
+
 				var eventType = e.type ? e.type : e.name;
 				switch(eventType) {
 					case 'click':
@@ -28,6 +30,13 @@ app.directive('ngGrid', ['$window', function($window) {
 			};
 			var userItemSelect = function ($el) {
 				var _isValidItem = $el.hasClass('my-list-item');
+				var bubble = eventBubbling($el, 'my-list-item');
+
+				if (!_isValidItem && bubble) {
+					_isValidItem = true;
+					$el = bubble;
+				}
+
 				if (!_open && _isValidItem) {
 					openItem($el);
 				}
@@ -61,6 +70,9 @@ app.directive('ngGrid', ['$window', function($window) {
 				_memory.h = $el.outerHeight();
 				var width = _$window.width() - (_margin * 2);
 				var height = _$window.height() - (_margin * 2);
+
+				console.log(elem.position().left)
+
 				$el.css({
 					width: width,
 					height: height,
@@ -78,7 +90,17 @@ app.directive('ngGrid', ['$window', function($window) {
 					elem.off(_transEndEventNames, handleEvent);
 				}
 			};
-
+			var eventBubbling = function ($el, param) {
+				var limit = 5;
+				var el = $el[0];
+				while (limit--) {
+					if ($(el).parent() && $(el).parent().hasClass(param)) {
+						return $(el).parent();
+					}
+					el = $(el).parent();
+				}
+				return false;
+			};
 			var gridGlue = function () {
 
 				var height = Math.ceil(_$window.height() * .8);

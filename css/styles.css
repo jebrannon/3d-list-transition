@@ -18,8 +18,8 @@ li {
 /* --- */
 
 #section {
-	width: 400%;
-	background: grey;
+	width: 100%;
+	overflow: hidden;
 }
 
 #section .my-list-item {
