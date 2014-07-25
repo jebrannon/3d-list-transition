@@ -40,6 +40,10 @@ app.directive('ngGrid', ['$window', function($window) {
 				$items.addClass('disable');
 				_open = true;
 				elem.on(_transEndEventNames, handleEvent);
+
+				console.log($el[0])
+
+
 				$el.addClass('focus');
 				$el.data('data-opening', 'true')
 				centralizeGridItem($el);
@@ -63,6 +67,11 @@ app.directive('ngGrid', ['$window', function($window) {
 				_memory.h = $el.height();
 				var width = _$window.width() - (_margin * 2);
 				var height = _$window.height() - (_margin * 2);
+
+				console.log('width', width);
+				console.log('height', height);
+				console.log('window', _$window[0]);
+
 				$el.css({
 					width: width,
 					height: height,
