@@ -3,6 +3,10 @@ body, h1, h2, h3, p {
 	padding: 0;
 }
 
+body {
+	/*height: 100%;*/
+}
+
 ul,
 li {
 	list-style: none;
@@ -17,12 +21,18 @@ li {
 
 /* --- */
 
-#section {
+#grid {
+	height: 100%;
+	position: relative;
 	width: 100%;
 	overflow: hidden;
 }
 
-#section .my-list-item {
+#grid .my-list {
+	position: relative;
+}
+
+#grid .my-list-item {
 
 	padding: 5px;
 	position: absolute;
@@ -61,7 +71,7 @@ li {
 }
 
 /*  START: Accommodating for IE  */
-#section .my-list-item.focus .back {
+#grid .my-list-item.focus .back {
 	-webkit-transform: rotateY(0deg);
 	-moz-transform: rotateY(0deg);
 	-o-transform: rotateY(0deg);
@@ -69,39 +79,38 @@ li {
 	transform: rotateY(0deg);
 }
 
-#section .my-list-item.focus .front {
+#grid .my-list-item.focus .front {
 	-webkit-transform: rotateY(180deg);
 	-moz-transform: rotateY(180deg);
 	-o-transform: rotateY(180deg);
 	transform: rotateY(180deg);
 }
 
-#section .my-list-item.focus {
+#grid .my-list-item.focus {
 	pointer-events: auto;
 	z-index: 100;
-	/*position: fixed;*/
 }
 
 /*  END: Accommodating for IE  */
 
-#section .small {
+#grid .small {
 	height: 33%;
 	width: 66%;
 }
 
-#section .large {
+#grid .large {
 	height: 33%;
 	width: 33%;
 }
 
-#section .front,
-#section .back,
-#section .my-list-inner {
+#grid .front,
+#grid .back,
+#grid .my-list-inner {
 	height: 100%;
 	width: 100%;
 }
 
-#section .my-list-inner {
+#grid .my-list-inner {
 	-webkit-transition: .75s;
 	-webkit-transform-style: preserve-3d;
 	
@@ -123,8 +132,8 @@ li {
 	box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-#section .front,
-#section .back {
+#grid .front,
+#grid .back {
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
@@ -150,14 +159,14 @@ li {
 	left: 0;
 }
 
-#section .front {
+#grid .front {
 	-webkit-transform: rotateY(0deg);
 	-ms-transform: rotateY(0deg);
 	background: red;
 	z-index: 2;
 }
 
-#section .back {
+#grid .back {
 	background: blue;
 	-webkit-transform: rotateY(-180deg);
 	-moz-transform: rotateY(-180deg);

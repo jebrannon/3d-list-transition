@@ -103,9 +103,12 @@ app.directive('ngGrid', ['$window', function($window) {
 			};
 			var gridGlue = function () {
 
-				var height = Math.ceil(_$window.height() * .8);
+				var height = Math.ceil(_$window.height() * .7);
+				var margin = Math.ceil(_$window.height() * .15)
 				var itemHeight = Math.ceil(height * .33);
 				elem.height(height);
+				// elem.css('top', margin);
+				$(document.body).height(_$window.height());
 
 				var $items = elem.find('.my-list-item');
 				var $item = false;
@@ -158,7 +161,7 @@ app.directive('ngGrid', ['$window', function($window) {
 					_items[inc].$el.css({
 						height: _items[inc].h,
 						width: _items[inc].w,
-						top: _items[inc].h * row,
+						top: (_items[inc].h * row) + margin,
 						left: temp_left,
 					});
 
