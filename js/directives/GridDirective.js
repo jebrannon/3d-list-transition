@@ -7,7 +7,7 @@ app.directive('ngGrid', ['$window', function($window) {
 			var _margin = 40;
 			var _open = false;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
-
+console.log('ngGrid');
 			//  Methods
 			var handleEvent = function (e) {
 				var eventType = e.type ? e.type : e.name;
@@ -71,6 +71,8 @@ app.directive('ngGrid', ['$window', function($window) {
 				console.log('width', width);
 				console.log('height', height);
 				console.log('window', _$window[0]);
+
+				elem.append('<p style="position: absolute;bottom: 0">'+height+$window+'</p>')
 
 				$el.css({
 					width: width,
