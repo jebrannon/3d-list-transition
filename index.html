@@ -51,8 +51,14 @@
                 <p>Here are the <a href="http://www.enable-javascript.com/" target="_blank"> instructions how to enable JavaScript in your web browser</a>.</p>
             </div>
         </noscript>
-        <div id="grid">
-            <ul class="my-list" ng-grid>
+        <div id="grid" ng-story-box>
+            <ul class="my-list"
+                ng-story-glue
+                ng-story-glue-align="horizontal"
+                ng-story-glue-rows="3"
+                ng-story-glue-height-ratio=".7"
+                ng-story-glue-adjust="true"
+                ng-story-glue-class=".my-list-item">
                 <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
                 <li class="my-list-item large"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
                 <li class="my-list-item small"><div class="my-list-inner"><div class="front"></div><div class="back"></div></div></li>
@@ -81,10 +87,11 @@
         </div>
 
         <script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript"></script>
-        <script src="js/libs/masonry.pkgd.min.js" type="text/javascript"></script>
+        <script src="js/libs/jquery.debouncedresize.js" type="text/javascript"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
         <script src="js/app.js" type="text/javascript"></script>
         <script src="js/controllers/PageController.js" type="text/javascript"></script>
-        <script src="js/directives/GridDirective.js" type="text/javascript"></script>
+        <script src="js/directives/StoryGlueDirective.js" type="text/javascript"></script>
+        <script src="js/directives/StoryBoxDirective.js" type="text/javascript"></script>
     </body>
 </html>

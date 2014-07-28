@@ -1,9 +1,9 @@
-app.directive('ngGrid', ['$window', function($window) {
+app.directive('ngStoryBox', ['$window', function($window) {
 	return {
 		restrict: 'A',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
-			var _memory = {x:0, y:0, w:0, h:0}
+			var _memory = {x:0, y:0, w:0, h:0};
 			var _margin = 50;
 			var _open = false;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
@@ -12,8 +12,6 @@ app.directive('ngGrid', ['$window', function($window) {
 
 			//  Methods
 			var handleEvent = function (e) {
-
-
 				var eventType = e.type ? e.type : e.name;
 				switch(eventType) {
 					case 'click':
@@ -101,83 +99,9 @@ app.directive('ngGrid', ['$window', function($window) {
 				}
 				return false;
 			};
-			var gridGlue = function () {
-
-				var height = Math.ceil(_$window.height() * .7);
-				var margin = Math.ceil(_$window.height() * .15)
-				var itemHeight = Math.ceil(height * .33);
-				elem.height(height);
-				// elem.css('top', margin);
-				$(document.body).height(_$window.height());
-
-				var $items = elem.find('.my-list-item');
-				var $item = false;
-				var len = $items.length;
-				var inc = 0;
-				var o = {};
-				var twidth = 0;
-
-				while (len--) {
-					$item = $($items[inc]);
-					o = {
-						h: itemHeight,
-						w: itemHeight,
-						top: 0,
-						left: 0,
-						$el: $item
-					}
-					if ($item.hasClass('large')) {
-						o.w = itemHeight * 2;
-					}
-					twidth = twidth + o.w;
-					_items.push(o);
-					inc++;
-				}
-
-				len = _items.length;
-				inc = 0;
-				row = 0;
-				col = 0;
-				var width_limiter = twidth/_rows;
-				var temp_width = 0;
-				var temp_left;
-
-				while (len--) {
-
-					temp_width = temp_width + _items[inc].w;
-					if (temp_width > width_limiter && row < (_rows-1)) {
-						temp_width = _items[inc].w;
-						row++;
-						col = 0;
-					}
-
-					if (col === 0) {
-						temp_left = 0;
-					}
-					else {
-						temp_left = temp_left + _items[inc-1].w;
-					}
-
-					_items[inc].$el.css({
-						height: _items[inc].h,
-						width: _items[inc].w,
-						top: (_items[inc].h * row) + margin,
-						left: temp_left,
-					});
-
-					col++;
-					inc++;
-
-					if (len === 0) {
-						elem.width(temp_width);
-					}
-
-				};
-			};
 
 			//  Listeners
-			elem.on('click', handleEvent);
-			gridGlue();
+			elem.on('click', handleEvent);		
 		}
   };
 }]);
