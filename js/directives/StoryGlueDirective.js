@@ -1,17 +1,23 @@
-app.directive('ngStoryGlue', ['$window', function($window) {
+app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($window, $interval, $timeout) {
 	return {
-		restrict: 'A',
+		template: '<li class="my-list-item {{item.className}}" ng-repeat="item in items"><div class="my-list-inner"><div class="front">{{item.title}}</div><div class="back">{{item.title}}</div></div></li>',
+		// templateUrl: '../templates/GridItemView.html',
+		restrict: 'AE',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
+			var _inited = false;
+			var _auto = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : true;
+			var _speed = 2000;
+			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
 			var _rows = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : 0;
 			var _cols = attrs.ngStoryGlueCols ? attrs.ngStoryGlueCols : 0;
+			var _items = [];
 			var _grid = {
 				'height': 0,
 				'width': 0,
 				'y': 0,
 				'fixed_apect': 0
 			};
-			var _items = [];
 
 			//  Methods
 			var handleEvent = function (e) {
@@ -19,6 +25,14 @@ app.directive('ngStoryGlue', ['$window', function($window) {
 				switch(eventType) {
 					case 'debouncedresize':
 						adjustGridLayout();
+						break;
+					case 'transitionend':
+					case 'webkitTransitionEnd':
+					case 'oTransitionEnd':
+					case 'otransitionend':
+					case 'MSTransitionEnd':
+						$(e.target).removeClass('updated');
+						$(e.target).off(_transEndEventNames, handleEvent);
 						break;
 				}
 			};
@@ -99,7 +113,7 @@ app.directive('ngStoryGlue', ['$window', function($window) {
 					while (len--) {
 
 						_items[inc].height = _grid.fixed_apect;
-						if (_items[inc].type === 'large') {
+						if (_items[inc].type === 'media') {
 							_items[inc].width = _grid.fixed_apect * 2;
 						}
 						else {
@@ -119,33 +133,66 @@ app.directive('ngStoryGlue', ['$window', function($window) {
 					}
 				};
 			};
-			var generateItemsObject = function () {
-				var $item = false;
-				var $items = attrs.ngStoryGlueClass ? elem.find('.my-list-item') : elem.children();
-				var inc = 0;
-				var len = $items.length;
-				var o = {};
-				var ratio = 0;
+			var updateItemsObject = function (data) {
 
-				//  Update individual item objects and total grid width
-				while (len--) {
-					$item = $($items[inc]);
-					o = {
-						type: 'small',
-						height: 0,
-						width: 0,
-						$el: $item
+				//  Existing 'items' object is out of date
+				if (_items.length !== data.length) {
+
+					var $_items = elem.find('.my-list-item');
+					var $_item = false;
+					var len = $_items.length;
+					var inc = 0;
+					var o = {};
+
+					// Ensure what is in the DOM matches the new data set
+					if ($_items.length === data.length) {
+
+						//  Reset items object and repopulate
+						_items = [];
+						while (len--) {
+
+							$_item = $($_items[inc]);
+							o = {
+								type: data[inc].className,
+								height: 0,
+								width: 0,
+								$el: $_item
+							}
+
+							//  Add to items array
+							_items.push(o);
+
+							//  Index
+							inc++;
+						}
+
 					}
-					if ($item.hasClass('large')) {
-						o.type = 'large';
+					else {
+						console.error('Mismatch between DOM and Data')
 					}
-
-					//  Add to items array
-					_items.push(o);
-
-					//  Index
-					inc++;
 				}
+			};
+			var updateOnceDataLoaded = function (data) {
+
+				//  
+				updateItemsObject(data);
+				adjustGridLayout();
+
+				//  
+				autoSelectItemsSequence();
+			};
+			var checkItemsHaveUpdated = function (e, data) {
+				/*  This is a horrible hack fix to ensure the DOM is ready for manipulation one data maping has occured.
+				    the 'link' function we are currently in is fired when the template is cloned but not upon template render.
+				    this would normally be fine for most manipulation but the grid need to instantaneously adjust on render  */
+				var $items = elem.find('.my-list-item');
+				var checkDOM = $interval(function(){
+					$items = elem.find('.my-list-item');
+					if ($items.length > 0) {
+						$interval.cancel(checkDOM);
+						updateOnceDataLoaded(data);
+					}
+				}, 1);
 			};
 			var adjustGridLayout = function () {
 
@@ -162,12 +209,40 @@ app.directive('ngStoryGlue', ['$window', function($window) {
 				//  Glue items grid together
 				positionGridItems();
 			};
+			var updateExistingItems = function (e, arr) {
+				var len = arr.length;
+				while (len--) {
+					_items[arr[len]].$el.addClass('updated');
+					_items[arr[len]].$el.on(_transEndEventNames, handleEvent);
+				}
+			};
+			var autoSelectItemsSequence = function () {
 
-			//  Init
-			generateItemsObject();
-			adjustGridLayout();
+				//  
+				if (!_inited) {
+					$('html, body').scrollLeft((_grid.width - _$window.width())/2);
+					elem.addClass('animate');
+					$('html, body').animate({scrollLeft: 0}, _speed);
+					_inited = true;
+				}
+
+				//  
+				if (_auto) {
+					var random = Math.floor(Math.random()*_items.length);
+					var offset = _items[random].$el.position().left;
+					$timeout(function () {
+						$('html, body').animate({scrollLeft: offset}, _speed, function () {
+							scope.$emit('select_item', random);
+						});
+					}, 8000)
+				}
+
+			};
+
+			//  Listeners
 			if (attrs.ngStoryGlueAdjust) _$window.on("debouncedresize", handleEvent);
-
+			scope.$on("items_added", checkItemsHaveUpdated);
+			scope.$on("items_changed", updateExistingItems);
 		}
   };
 }]);
