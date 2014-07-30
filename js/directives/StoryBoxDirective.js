@@ -3,11 +3,13 @@ app.directive('ngStoryBox', ['$window', function($window) {
 		restrict: 'A',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
+			var _open = false;
 			var _memory = {x:0, y:0, w:0, h:0};
 			var _margin = attrs.ngStoryBoxMargin ? Number(attrs.ngStoryBoxMargin) : 50;
-			var _open = false;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
 			var _items = [];
+			var _selector = attrs.ngStoryGlueSelector ? attrs.ngStoryGlueSelector : '.list-item';
+			var _class = _selector.replace('.','').replace('#','');
 
 			//  Methods
 			var handleEvent = function (e, attr) {
@@ -24,13 +26,21 @@ app.directive('ngStoryBox', ['$window', function($window) {
 						transtitionManager(angular.element(e.target));
 						break;
 					case 'select_item':
-						autoSelectItem(attr);
+						if (!_open) {
+							userItemSelect(attr);
+						}
+						break;
+					case 'close_item':
+						if (_open) {
+							userItemSelect(attr);
+						}
 						break;
 				}
 			};
 			var userItemSelect = function ($el) {
-				var _isValidItem = $el.hasClass('my-list-item');
-				var bubble = eventBubbling($el, 'my-list-item');
+				var _isValidItem = $el.hasClass(_class);
+				// var _isOpen = $el.hasClass('focus');
+				var bubble = eventBubbling($el, _selector);
 
 				if (!_isValidItem && bubble) {
 					_isValidItem = true;
@@ -38,6 +48,7 @@ app.directive('ngStoryBox', ['$window', function($window) {
 				}
 
 				if (!_open && _isValidItem) {
+					_open = true; 
 					openItem($el);
 				}
 				else if (_open && _isValidItem) {
@@ -45,26 +56,19 @@ app.directive('ngStoryBox', ['$window', function($window) {
 				}
 			};
 			var autoSelectItem = function (index) {
-				var $items = elem.find('.my-list-item');
+				var $items = elem.find(_selector);
 				userItemSelect(angular.element($items[index]));
 			};
 			var openItem = function ($el) {
-				var $items = elem.find('.my-list-item');
+				var $items = elem.find(_selector);
 				$items.addClass('disable');
-				// _open = true;
 				elem.on(_transEndEventNames, handleEvent);
-
-				
 				$el.addClass('focus');
+				$('body').addClass('prevent-scroll');
 				centralizeGridItem($el);
-
-
-
-					console.log('openItem', $el[0]);
 			};
 			var closeItem = function ($el) {
 				$el.removeClass('focus');
-				_open = false;
 				$el.css({
 					width: _memory.w,
 					height: _memory.h,
@@ -89,12 +93,19 @@ app.directive('ngStoryBox', ['$window', function($window) {
 				});
 			};
 			var transtitionManager = function ($el) {
-				var _isValidItem = $el.hasClass('my-list-item');
-				var $items = elem.find('.my-list-item');
+				var _isValidItem = $el.hasClass(_class);
+				var $items = elem.find(_selector);
 				if (_isValidItem) {
+
+					//  
 					if (!$el.hasClass('focus')) {
 						$items.removeClass('disable');
+						_open = false;
+						$('body').removeClass('prevent-scroll');
+						scope.$emit('item_closed');
 					}
+
+					//  
 					elem.off(_transEndEventNames, handleEvent);
 				}
 			};
@@ -113,6 +124,7 @@ app.directive('ngStoryBox', ['$window', function($window) {
 			//  Listeners
 			elem.on('click', handleEvent);		
 			scope.$on("select_item", handleEvent);
+			scope.$on("close_item", handleEvent);
 		}
   };
 }]);

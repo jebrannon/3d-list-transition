@@ -3,8 +3,8 @@ body, h1, h2, h3, p {
 	padding: 0;
 }
 
-body {
-	/*height: 100%;*/
+body, html {
+	
 }
 
 ul,
@@ -20,6 +20,21 @@ li {
 
 
 /* --- */
+
+.prevent-scroll {
+	overflow: hidden;
+}
+
+#branding {
+	background-image: url('/image/logo@2x.jpg');
+	background-repeat: no-repeat;
+	background-size: 150px 49px;
+	height: 49px;
+	left: 20px;
+	position: fixed;
+	top: 20px;
+	width: 150px;
+}
 
 #grid {
 	height: 100%;

@@ -51,18 +51,23 @@
                 <p>Here are the <a href="http://www.enable-javascript.com/" target="_blank"> instructions how to enable JavaScript in your web browser</a>.</p>
             </div>
         </noscript>
-        <div id="grid">
+
+        <div id="branding"></div>
+
+        <div id="grid"
+            ng-auto-story
+            ng-auto-story-interval="2000"
+            ng-auto-story-selector=".my-list-item">
             <ul class="my-list"
                 ng-story-glue
                 ng-story-glue-align="horizontal"
                 ng-story-glue-rows="3"
                 ng-story-glue-height-ratio=".7"
                 ng-story-glue-adjust="true"
-                ng-story-glue-class=".my-list-item"
-                ng-story-glue-auto="true"
+                ng-story-glue-selector=".my-list-item"
                 ng-story-box
                 ng-story-box-margin="60"
-                ng-story-box-class=".my-list-item">               
+                ng-story-box-selector=".my-list-item">               
             </ul>
         </div>
 
@@ -73,5 +78,6 @@
         <script src="js/controllers/PageController.js" type="text/javascript"></script>
         <script src="js/directives/StoryGlueDirective.js" type="text/javascript"></script>
         <script src="js/directives/StoryBoxDirective.js" type="text/javascript"></script>
+        <script src="js/directives/AutoStoryDirective.js" type="text/javascript"></script>
     </body>
 </html>

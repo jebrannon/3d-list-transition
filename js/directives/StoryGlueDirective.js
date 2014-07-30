@@ -1,17 +1,17 @@
 app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($window, $interval, $timeout) {
 	return {
-		template: '<li class="my-list-item {{item.className}}" ng-repeat="item in items"><div class="my-list-inner"><div class="front">{{item.title}}</div><div class="back">{{item.title}}</div></div></li>',
+		template: '<li id="{{item.id}}" class="my-list-item {{item.className}}" ng-repeat="item in items"><div class="my-list-inner"><div class="front">{{item.title}}</div><div class="back">{{item.title}}</div></div></li>',
 		// templateUrl: '../templates/GridItemView.html',
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
 			var _inited = false;
 			var _auto = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : true;
-			var _speed = 2000;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
 			var _rows = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : 0;
 			var _cols = attrs.ngStoryGlueCols ? attrs.ngStoryGlueCols : 0;
 			var _items = [];
+			var _selector = attrs.ngStoryGlueSelector ? attrs.ngStoryGlueSelector : '.list-item';
 			var _grid = {
 				'height': 0,
 				'width': 0,
@@ -178,16 +178,24 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				updateItemsObject(data);
 				adjustGridLayout();
 
-				//  
-				autoSelectItemsSequence();
+				//  Initial animation
+				if (!_inited) {
+					$('html, body').scrollLeft((_grid.width - _$window.width())/2);
+					elem.addClass('animate');
+					$('html, body').animate({scrollLeft: 0}, 2000);
+					_inited = true;
+				}
+
+				//  The DOM is ready
+				scope.$emit("items_ready");
 			};
 			var checkItemsHaveUpdated = function (e, data) {
 				/*  This is a horrible hack fix to ensure the DOM is ready for manipulation one data maping has occured.
 				    the 'link' function we are currently in is fired when the template is cloned but not upon template render.
 				    this would normally be fine for most manipulation but the grid need to instantaneously adjust on render  */
-				var $items = elem.find('.my-list-item');
+				var $items = elem.find(_selector);
 				var checkDOM = $interval(function(){
-					$items = elem.find('.my-list-item');
+					$items = elem.find(_selector);
 					if ($items.length > 0) {
 						$interval.cancel(checkDOM);
 						updateOnceDataLoaded(data);
@@ -215,28 +223,6 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 					_items[arr[len]].$el.addClass('updated');
 					_items[arr[len]].$el.on(_transEndEventNames, handleEvent);
 				}
-			};
-			var autoSelectItemsSequence = function () {
-
-				//  
-				if (!_inited) {
-					$('html, body').scrollLeft((_grid.width - _$window.width())/2);
-					elem.addClass('animate');
-					$('html, body').animate({scrollLeft: 0}, _speed);
-					_inited = true;
-				}
-
-				//  
-				if (_auto) {
-					var random = Math.floor(Math.random()*_items.length);
-					var offset = _items[random].$el.position().left;
-					$timeout(function () {
-						$('html, body').animate({scrollLeft: offset}, _speed, function () {
-							scope.$emit('select_item', random);
-						});
-					}, 8000)
-				}
-
 			};
 
 			//  Listeners
