@@ -44,7 +44,9 @@
         <!-- Main Stylesheet -->
         <link href="css/styles.css" rel="stylesheet" type="text/css" />
     </head>
-    <body ng-app='ngApp' ng-controller="pageController">
+    <body ng-app='ngApp' ng-controller="pageController" 
+        ng-story-interaction
+        ng-story-interaction-inactive-period="10000">
         <noscript>
             <div class="no-script">
                 <p>For full functionality of this site it is necessary to enable JavaScript.</p>
@@ -55,19 +57,19 @@
         <div id="branding"></div>
 
         <div id="grid"
-            ng-auto-story
-            ng-auto-story-interval="2000"
-            ng-auto-story-selector=".my-list-item">
+            ng-story-auto
+            ng-story-auto-interval="1"
+            ng-story-auto-speed="2000"
+            ng-story-auto-wait="5000"
+            ng-story-auto-selector=".my-list-item">
             <ul class="my-list"
                 ng-story-glue
-                ng-story-glue-align="horizontal"
                 ng-story-glue-rows="3"
                 ng-story-glue-height-ratio=".7"
-                ng-story-glue-adjust="true"
                 ng-story-glue-selector=".my-list-item"
-                ng-story-box
-                ng-story-box-margin="60"
-                ng-story-box-selector=".my-list-item">               
+                ng-story-item
+                ng-story-item-margin="60"
+                ng-story-item-selector=".my-list-item">               
             </ul>
         </div>
 
@@ -77,7 +79,8 @@
         <script src="js/app.js" type="text/javascript"></script>
         <script src="js/controllers/PageController.js" type="text/javascript"></script>
         <script src="js/directives/StoryGlueDirective.js" type="text/javascript"></script>
-        <script src="js/directives/StoryBoxDirective.js" type="text/javascript"></script>
-        <script src="js/directives/AutoStoryDirective.js" type="text/javascript"></script>
+        <script src="js/directives/StoryItemDirective.js" type="text/javascript"></script>
+        <script src="js/directives/StoryAutoDirective.js" type="text/javascript"></script>
+        <script src="js/directives/StoryInteractionDirective.js" type="text/javascript"></script>
     </body>
 </html>

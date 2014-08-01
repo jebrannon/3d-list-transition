@@ -6,12 +6,12 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
 			var _inited = false;
-			var _auto = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : true;
+			var _adjust = attrs.ngStoryGlueAdjust ? attrs.ngStoryGlueAdjust : true;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
-			var _rows = attrs.ngStoryGlueRows ? attrs.ngStoryGlueRows : 0;
-			var _cols = attrs.ngStoryGlueCols ? attrs.ngStoryGlueCols : 0;
-			var _items = [];
+			var _rows = attrs.ngStoryGlueRows ? Number(attrs.ngStoryGlueRows) : 0;
+			var _ratio = attrs.ngStoryGlueHeightRatio ? Number(attrs.ngStoryGlueHeightRatio) : 1;
 			var _selector = attrs.ngStoryGlueSelector ? attrs.ngStoryGlueSelector : '.list-item';
+			var _items = [];
 			var _grid = {
 				'height': 0,
 				'width': 0,
@@ -77,61 +77,46 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				};
 			};
 			var updateGridAndItemsObject = function () {
-				var alignment = attrs.ngStoryGlueAlign;
 				var inc = 0;
 				var len = _items.length;
-				var ratio = 0;
 
-				//  Horizontally aligned list
-				if (alignment 
-					&& alignment === "horizontal") {
+				//  Reset grid width
+				_grid.width = 0;
 
-					//  grid height to window height ratio
-					if (attrs.ngStoryGlueHeightRatio) {
-						ratio = Number(attrs.ngStoryGlueHeightRatio);
+				//  Height and Y position
+				_grid.height = Math.ceil(_$window.height() * _ratio);
+				_grid.y = Math.ceil(_$window.height() * (1-_ratio)/2);
+
+				//  Fixed aspect dimension (the width or height is always consistent depending on alignment)
+				if (_rows > 0) {
+					_grid.fixed_apect = Math.round(_grid.height/_rows);
+				}
+				else {
+					_grid.fixed_apect = _grid.height;
+				}
+
+				//  Update individual item size and total grid width
+				while (len--) {
+
+					_items[inc].height = _grid.fixed_apect;
+					if (_items[inc].type === 'media') {
+						_items[inc].width = _grid.fixed_apect * 2;
 					}
 					else {
-						ratio = 1;
+						_items[inc].width = _grid.fixed_apect;
 					}
 
-					//  Reset grid width
-					_grid.width = 0;
+					//  Increment width value based on item width
+					_grid.width = _grid.width + _items[inc].width;
 
-					//  Height and Y position
-					_grid.height = Math.ceil(_$window.height() * ratio);
-					_grid.y = Math.ceil(_$window.height() * (1-ratio)/2);
+					//  Index
+					inc++;
+				}
 
-					//  Fixed aspect dimension (the width or height is always consistent depending on alignment)
-					if (_rows > 0) {
-						_grid.fixed_apect = Math.round(_grid.height/_rows);
-					}
-					else {
-						_grid.fixed_apect = _grid.height;
-					}
-
-					//  Update individual item size and total grid width
-					while (len--) {
-
-						_items[inc].height = _grid.fixed_apect;
-						if (_items[inc].type === 'media') {
-							_items[inc].width = _grid.fixed_apect * 2;
-						}
-						else {
-							_items[inc].width = _grid.fixed_apect;
-						}
-
-						//  Increment width value based on item width
-						_grid.width = _grid.width + _items[inc].width;
-
-						//  Index
-						inc++;
-					}
-
-					//  Calculate total grid width based on rows
-					if (_rows > 0) {
-						_grid.width = Math.ceil(_grid.width/_rows);
-					}
-				};
+				//  Calculate total grid width based on rows
+				if (_rows > 0) {
+					_grid.width = Math.ceil(_grid.width/_rows);
+				}
 			};
 			var updateItemsObject = function (data) {
 
@@ -187,7 +172,7 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				}
 
 				//  The DOM is ready
-				scope.$emit("items_ready");
+				scope.$emit("ng_StoryGlue_ready");
 			};
 			var checkItemsHaveUpdated = function (e, data) {
 				/*  This is a horrible hack fix to ensure the DOM is ready for manipulation one data maping has occured.
@@ -226,9 +211,9 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 			};
 
 			//  Listeners
-			if (attrs.ngStoryGlueAdjust) _$window.on("debouncedresize", handleEvent);
-			scope.$on("items_added", checkItemsHaveUpdated);
-			scope.$on("items_changed", updateExistingItems);
+			if (_adjust) _$window.on("debouncedresize", handleEvent);
+			scope.$on("ng_items_added", checkItemsHaveUpdated);
+			scope.$on("ng_items_changed", updateExistingItems);
 		}
   };
 }]);

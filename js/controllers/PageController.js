@@ -191,28 +191,36 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 		/**
 		 * Using Fisher-Yates shuffle algorithm.
 		 */
-		var clone = array.slice();
-		for (var i = clone.length - 1; i > 0; i--) {
+		var _clone = array.slice();
+		for (var i = _clone.length - 1; i > 0; i--) {
 			var j = Math.floor(Math.random() * (i + 1));
-			var temp = clone[i];
-			clone[i] = clone[j];
-			clone[j] = temp;
+			var temp = _clone[i];
+			_clone[i] = _clone[j];
+			_clone[j] = temp;
 		}
-		return clone;
-	}
+		return _clone;
+	};
 
 	//  Within scope
+	$scope.isIE = (navigator.userAgent.indexOf("MSIE") != -1);
+	$scope.auto = true;
 	$scope.items = shuffleArray(sampleData);
 	$scope.order = sampleData;
 	$scope.$watch('items', function (data) {
 		if (updateMemory) {
-			$scope.$broadcast('items_changed', updateMemory);
+			$scope.$broadcast('ng_items_changed', updateMemory);
 			updateMemory = false;
 		}
 		else {
-			$scope.$broadcast('items_added', data);
+			$scope.$broadcast('ng_items_added', data);
 		}
   }, true);
+  $scope.$on('ng_StoryAuto_stop', function () {
+  	$scope.auto = false;
+  });
+  $scope.$on('ng_StoryAuto_play', function () {
+  	$scope.auto = true;
+  });
 
   
 
