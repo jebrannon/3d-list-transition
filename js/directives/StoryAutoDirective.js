@@ -11,7 +11,6 @@ app.directive('ngStoryAuto', ['$window', '$timeout', function($window, $timeout)
 			var _$item = false;
 			var _$body = scope.isIE ? $('html') : $('body');   //  This needs to be HTML for IE
 
-// console.log(window.navigator.appVersion)
 
 			//  Methods
 			var _handleEvent = function (e, attr) {

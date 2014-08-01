@@ -5,6 +5,7 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
+			var _$body = scope.isIE ? $('html') : $('body');   //  This needs to be HTML for IE
 			var _inited = false;
 			var _adjust = attrs.ngStoryGlueAdjust ? attrs.ngStoryGlueAdjust : true;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
@@ -165,9 +166,9 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 
 				//  Initial animation
 				if (!_inited) {
-					$('html, body').scrollLeft((_grid.width - _$window.width())/2);
+					_$body.scrollLeft((_grid.width - _$window.width())/2);
 					elem.addClass('animate');
-					$('html, body').animate({scrollLeft: 0}, 2000);
+					_$body.animate({scrollLeft: 0}, 2000);
 					_inited = true;
 				}
 

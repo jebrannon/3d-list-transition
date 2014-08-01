@@ -202,7 +202,7 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 	};
 
 	//  Within scope
-	$scope.isIE = (navigator.userAgent.indexOf("MSIE") != -1);
+	$scope.isIE = (navigator.userAgent.indexOf("MSIE") != -1 || navigator.appVersion.indexOf('Trident/') > 0);
 	$scope.auto = true;
 	$scope.items = shuffleArray(sampleData);
 	$scope.order = sampleData;

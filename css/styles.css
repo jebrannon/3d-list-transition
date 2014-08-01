@@ -49,6 +49,7 @@ li {
 #grid .my-list-item {
 	padding: 5px;
 	position: absolute;
+	z-index: 1;
 
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -182,7 +183,7 @@ li {
 	-webkit-transform: rotateY(0deg);
 	-ms-transform: rotateY(0deg);
 	background: red;
-	z-index: 2;
+	/*z-index: 2;*/
 }
 
 #grid .back {
