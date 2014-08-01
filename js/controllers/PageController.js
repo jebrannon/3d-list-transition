@@ -208,11 +208,11 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 	$scope.order = sampleData;
 	$scope.$watch('items', function (data) {
 		if (updateMemory) {
-			$scope.$broadcast('ng_items_changed', updateMemory);
+			$scope.$broadcast('ng_StoryGlue_update', updateMemory);
 			updateMemory = false;
 		}
 		else {
-			$scope.$broadcast('ng_items_added', data);
+			$scope.$broadcast('ng_StoryGlue_inject', data);
 		}
   }, true);
   $scope.$on('ng_StoryAuto_stop', function () {
@@ -223,7 +223,7 @@ app.controller("pageController", function ($scope, $window, $timeout) {
   });
 
   
-
+  //  Temporary
 	// $timeout(function() {
  //  	$scope.items.push(
  //  	{
@@ -288,22 +288,21 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 	// 	})
  //  }, 2000);
 
-  // $timeout(function() {
-  // 	// updateMemory = [3,6,8];
+ //  $timeout(function() {
 
-  // 	$timeout(function() {
-  // 		$scope.items[3].title = 'Story';
-  // 		updateMemory = [3];
-  // 	}, 100);
+ //  	$timeout(function() {
+ //  		$scope.items[3].title = 'Story';
+ //  		updateMemory = [3];
+ //  	}, 100);
 
-  // 	$timeout(function() {
-  // 		$scope.items[6].title = 'Stream';
-  // 		updateMemory = [6];
-  //  	}, 300);
+ //  	$timeout(function() {
+ //  		$scope.items[6].title = 'Stream';
+ //  		updateMemory = [6];
+ //   	}, 300);
 
-  // 	$timeout(function() {
-  // 		$scope.items[8].title = 'Striders';
-  // 		updateMemory = [8];
-  // 	}, 500);
-  // }, 3000);
+ //  	$timeout(function() {
+ //  		$scope.items[8].title = 'Striders';
+ //  		updateMemory = [8];
+ //  	}, 500);
+ //  }, 3000);
 });
