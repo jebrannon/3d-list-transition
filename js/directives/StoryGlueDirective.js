@@ -31,8 +31,8 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 					case 'ng_StoryGlue_inject':
 						_checkItemsHaveUpdated(attr);
 						break;
-					case 'ng_StoryGlue_inject':
-						_checkItemsHaveUpdated(attr);
+					case 'ng_StoryGlue_update':
+						_storyItemContentHasUpdated(attr);
 						break;
 					case 'transitionend':
 					case 'webkitTransitionEnd':
@@ -56,31 +56,25 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				_len = _items.length;
 				_inc = 0;
 				while (_len--) {
+
+					//  Calculate 'left' position
+					_x = _story.fixed_aspect * _inThisRow;
+
+					//  Update item element
+					_items[_inc].$el.css({
+						top: _story.fixed_aspect * _currentRow,
+						left: _x,
+					});
+
+					//  Calculate items in row, either single or double
 					if (_items[_inc].type === 'flat') _inThisRow = _inThisRow + 2;
 					else _inThisRow = _inThisRow + 1;
 
-					//  
-					if (_inThisRow <= _story.items_in_row) {
-
-						//  Update item element
-						_items[_inc].$el.css({
-							top: _story.fixed_aspect * _currentRow,
-							left: _x,
-						});
-
-						//  Calculate next 'left' position
-						_x = _story.fixed_aspect * _inThisRow;
-					}
-					else {
+					//  Reset once limit reached
+					if (_inThisRow >= _story.items_in_row) {
 						_inThisRow = 0;
 						_x = 0;
 						_currentRow++;
-
-						//  Update item element
-						_items[_inc].$el.css({
-							top: _story.fixed_aspect * _currentRow,
-							left: _x,
-						});
 					}
 
 					//  Increment
@@ -197,10 +191,8 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 
 				//  Initial animation
 				if (!_inited) {
-					_$body.scrollLeft((_story.width - _$window.width())/2);
-					_$body.animate({scrollLeft: 0}, 2000, function() {
-						elem.addClass('animate');
-					});
+					// _$body.scrollLeft((_story.width - _$window.width())/2);
+					// _$body.animate({scrollLeft: 0}, 2000);
 					_inited = true;
 				}
 
@@ -227,7 +219,7 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				_updateStoryItems();
 				_glueStoryItemsTogether();
 			};
-			var _storyItemContentHasUpdated = function (e, arr) {
+			var _storyItemContentHasUpdated = function (arr) {
 				var len = arr.length;
 				while (len--) {
 					_items[arr[len]].$el.addClass('updated');

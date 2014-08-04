@@ -4,8 +4,10 @@ body, h1, h2, h3, p {
 }
 
 body, html {
-	
+	-webkit-transform: translate3d(0, 0, 0);
 }
+
+body * {-webkit-transform: translate3d(0, 0, 0);}
 
 ul,
 li {
@@ -51,7 +53,6 @@ li {
 	padding: 5px;
 	position: absolute;
 	z-index: 1;
-
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-ms-box-sizing: border-box;
