@@ -18,7 +18,7 @@ app.directive('ngStoryAuto', ['$window', '$timeout', function($window, $timeout)
 				switch(eventType) {
 					case 'ng_StoryGlue_ready':
 					case 'ng_StoryAuto_play':
-						_playStorySequence();
+						// _playStorySequence();
 						break;
 					case 'ng_StoryAuto_stop':
 						_stopStorySequence();

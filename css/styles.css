@@ -44,6 +44,7 @@ li {
 
 #grid .my-list {
 	position: relative;
+	background-color: lightgrey;
 }
 
 #grid .my-list-item {

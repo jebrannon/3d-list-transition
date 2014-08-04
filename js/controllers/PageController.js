@@ -185,6 +185,14 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 			id: 'd37',
 			className: 'media',
 			title: '37'
+		},
+  	{
+			className: 'media',
+			title: '38'
+		},
+		{
+			className: 'media',
+			title: '39'
 		}
 	];
 	var shuffleArray = function (array) {
@@ -221,7 +229,6 @@ app.controller("pageController", function ($scope, $window, $timeout) {
   $scope.$on('ng_StoryAuto_play', function () {
   	$scope.auto = true;
   });
-
   
   //  Temporary
 	// $timeout(function() {

@@ -5,7 +5,7 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
-			var _$body = scope.isIE ? $('html') : $('body');   //  This needs to be HTML for IE
+			var _$body = scope.isIE ? $('html') : $('body');   //  This needs to be 'HTML' for IE.
 			var _inited = false;
 			var _adjust = attrs.ngStoryGlueAdjust ? attrs.ngStoryGlueAdjust : true;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
@@ -14,8 +14,8 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 			var _selector = attrs.ngStoryGlueSelector ? attrs.ngStoryGlueSelector : '.list-item';
 			var _items = [];
 			var _story = {
-				'height': 0,
-				'width': 0,
+				// 'height': 0,
+				// 'width': 0,
 				'y': 0,
 				'fixed_apect': 0
 			};
@@ -25,13 +25,13 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				var eventType = e.type ? e.type : e.name;
 				switch(eventType) {
 					case 'debouncedresize':
-						_adjustStoryLayout();
+						_adjustGridLayout();
 						break;
 					case 'ng_StoryGlue_inject':
-						_checkElementsAreReady(attr);
+						_checkItemsHaveUpdated(attr);
 						break;
-					case 'ng_StoryGlue_update':
-						_updateExistingItems(attr);
+					case 'ng_StoryGlue_inject':
+						_checkItemsHaveUpdated(attr);
 						break;
 					case 'transitionend':
 					case 'webkitTransitionEnd':
@@ -43,22 +43,26 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 						break;
 				}
 			};
-			var _glueStoryItemsTogether = function (data) {
+			var _glueStoryItemsTogether = function () {
 				var len = _items.length;
 				var inc = 0;
-				var row = 0;
+				var _currentRow = 0;
 				var col = 0;
 				var temp_width = 0;
 				var temp_left = 0;
+
+
+				_returnMaxStoryViewportWidth();
+
 
 				while (len--) {
 					//  Increment temp width in order to compare with grid width
 					temp_width = temp_width + _items[inc].width;
 
 					//  Calculate rows and columns values
-					if (temp_width > _story.width && row < (_rows-1)) {
+					if (temp_width > _story.width && _currentRow < (_rows-1)) {
 						temp_width = _items[inc].width;
-						row++;
+						_currentRow++;
 						col = 0;
 					}
 
@@ -72,9 +76,7 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 
 					//  Update item element
 					_items[inc].$el.css({
-						height: _items[inc].height,
-						width: _items[inc].width,
-						top: (_items[inc].height * row),
+						top: (_items[inc].height * _currentRow),
 						left: temp_left,
 					});
 
@@ -83,156 +85,131 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 					inc++;
 				};
 			};
-			var _updateGridAndItemsObject = function (data) {
+			var _returnMaxStoryViewportWidth = function () {
+				var _len = _items.length;
 				var _inc = 0;
-				var _len = data.length;
-				var _height = Math.ceil(_$window.height() * _ratio);
-				var _y = Math.ceil(_$window.height() * (1-_ratio)/2);
-				var _itemHeight = (_rows>0) ? Math.round(_height/_rows) : _height;
-				var _$items = elem.find(_selector);
+				var _totalWidth = 0;
+				var _itemsLarge = 0;
+				var _itemsSmall = 0;
+				while (_len--) {
+					_totalWidth = _totalWidth + _items[_inc].$el.outerWidth();
 
-				/*
-					Update Story size and position attributes
-				*/
-				_story.width = 0;
-				_story.height = _height;
-				_story.y = _y;
+					if (_items[_inc].type === 'flat') _itemsLarge++;
+					else _itemsSmall++;
 
-				/*
-					Reset items reference
-				*/
-				_items = [];
+					_inc++;
 
-				/*
-					Update individual item size and total Story width
-				*/
+				};
+				_totalWidth = _totalWidth/_rows;
+
+				console.log(_items.length);
+				console.log('totals: large', _itemsLarge, ' - small', _itemsSmall);
+				console.log('_totalWidth', _totalWidth, ' - fixed_apect', _story.fixed_apect);
+				console.log(_totalWidth/_story.fixed_apect);
+			};
+			var _updateStoryItems = function () {
+				var _inc = 0;
+				var _len = _items.length;
+				var _itemHeight = 0;
+				var _itemWidth = 0;
+
+				//  Update individual item size and total grid width
 				while (_len--) {
 
-					//  Create new item
-					_items.push({});
-					_items[_inc].type = data[_inc].className;
-					_items[_inc].$el = angular.element(_$items[_inc]);
+					//  Calculate new width and heights
+					_itemHeight = _story.fixed_apect;
+					if (_items[_inc].type === 'flat') _itemWidth = _story.fixed_apect * 2;
+					else _itemWidth = _story.fixed_apect;
 
-					//  Height is always consistent
-					_items[_inc].height = _itemHeight;
-
-					//  Width is based on centent type
-					if (_items[_inc].type === 'media') {
-						_items[_inc].width = _itemHeight * 2;
-					}
-					else {
-						_items[_inc].width = _itemHeight;
-					}
+					//  Update individual item element size
+					_items[_inc].$el.css({
+						height: _itemHeight,
+						width: _itemWidth
+					});
 
 					//  Increment width value based on item width
-					_story.width = _story.width + _items[_inc].width;
+					_story.width = _story.width + _itemWidth;
 
 					//  Index
 					_inc++;
 				}
-
-				/*
-					Calculate Story row width
-				*/
-				if (_rows > 0) {
-					_story.width = Math.ceil(_story.width/_rows);
-				}
 			};
-			var _updateItemSize = function (data) {
-				var _$items = elem.find(_selector);
-				var _$item = false;
-				var _len = _$items.length;
-				var _index = 0;
-				var _storyHeight = Math.ceil(_$window.height() * _ratio);
-				var _storyWidth = 0;
-				var _totalWidth = 0;
-				var _y = Math.ceil(_$window.height() * (1-_ratio)/2);
-				var _itemHeight = (_rows>0) ? Math.round(_storyHeight/_rows) : _storyHeight;
-				
-				/*
-					Calculations for
-					- item sizing
-					- total width
-				*/
-				while (_len--) {
-					_$item = angular.element(_$items[_index]);
-					_$item.height(_itemHeight);
+			var _updateItemsReferenceObject = function (data) {
 
-					//  Update width
-					if (_$item.hasClass('media')) _$item.width(_itemHeight*2);
-					else _$item.width(_itemHeight);
+				//  Existing 'items' object is out of date
+				if (_items.length !== data.length) {
+					var $_items = elem.find('.my-list-item');
+					var $_item = false;
+					var len = $_items.length;
+					var inc = 0;
+					var o = {};
 
-					//  Add item widths
-					_totalWidth = _totalWidth + _$item.width();
+					// Ensure what is in the DOM matches the new data set
+					if ($_items.length === data.length) {
 
-					//  Increment index
-					_index++
-				}
+						//  Reset items object and repopulate
+						_items = [];
+						while (len--) {
 
-				_storyWidth = Math.ceil(_totalWidth / _rows);
+							//  Isolate element
+							$_item = $($_items[inc]);
 
-				elem.css({
-					height: _storyHeight,
-					width: _storyWidth,
-					top: _y
-				});
+							//  Create new reference object
+							o = {
+								type: data[inc].className,
+								height: 0,
+								width: 0,
+								$el: $_item
+							}
 
+							//  Add to items array
+							_items.push(o);
 
+							//  Index
+							inc++;
+						}
 
-				_len = _$items.length;
-				_index = 0;
-				_totalWidth = 0;
-				var _x = 0;
-				var _currentRow = 0;
-				var _col = 0;
-				while (_len--) {
-					_$item = angular.element(_$items[_index]);
-
-					//  Increment temp width in order to compare with grid width
-					_totalWidth = _totalWidth + _$item.outerWidth();
-
-console.log(_$item.width());
-console.log(_$item.outerWidth());
-console.log('--');
-
-					//  Calculate rows and columns values
-					if (_totalWidth > _storyWidth) {
-						_totalWidth = _$item.outerWidth();
-						_currentRow++;
-						_col = 0;
-					}
-
-					//  Adjust columns
-					if (_col === 0) {
-						_x = 0;
 					}
 					else {
-						_x = _x + angular.element(_$items[_index-1]).outerWidth();
+						console.error('Mismatch between DOM and Data')
 					}
-					
-					//  Update item element
-					_$item.css({
-						top: _itemHeight * _currentRow,
-						left: _x,
+				}
+			};
+			var _updateStoryViewport = function () {
+				var _newHeight = Math.ceil(_$window.height() * _ratio);
+				var _newY = Math.ceil(_$window.height() * (1-_ratio)/2);
+
+				//  Only update viewport if window size has changed
+				if (_newHeight !== _story.height) {
+					_story.height = _newHeight;
+					_story.y = _newY;
+
+					//  Fixed aspect dimension (item height is always consistent)
+					if (_rows > 0) {
+						_story.fixed_apect = Math.round(_story.height/_rows);
+					}
+					else {
+						_story.fixed_apect = _story.height;
+					}
+
+					//  Adjust viewport element size an position
+					elem.css({
+						height: _story.height,
+						width: _story.width,
+						top: _story.y
 					});
-
-					//  Increment columns and index
-					_col++;
-					_index++;
 				};
-
-
 			};
 			var _updateOnceDataLoaded = function (data) {
 
 				//  
-				// _syncItemsReferenceToData(data);
-				_adjustStoryLayout(data);
+				_updateItemsReferenceObject(data);
+				_adjustGridLayout();
 
 				//  Initial animation
 				// if (!_inited) {
 				// 	_$body.scrollLeft((_story.width - _$window.width())/2);
-					elem.addClass('animate');
+				// 	elem.addClass('animate');
 				// 	_$body.animate({scrollLeft: 0}, 2000);
 				// 	_inited = true;
 				// }
@@ -240,36 +217,27 @@ console.log('--');
 				//  The DOM is ready
 				scope.$emit("ng_StoryGlue_ready");
 			};
-			var _checkElementsAreReady = function (data) {
+			var _checkItemsHaveUpdated = function (data) {
 				/*  This is a horrible hack fix to ensure the DOM is ready for manipulation one data maping has occured.
 				    the 'link' function we are currently in is fired when the template is cloned but not upon template render.
 				    this would normally be fine for most manipulation but the grid need to instantaneously adjust on render  */
-				var $items = elem.find(_selector);
-				var checkDOM = $interval(function(){
-					$items = elem.find(_selector);
-					if ($items.length > 0) {
-						$interval.cancel(checkDOM);
+				var _$items = elem.find(_selector);
+				var _checkDOM = $interval(function(){
+					_$items = elem.find(_selector);
+					if (_$items.length > 0) {
+						$interval.cancel(_checkDOM);
 						_updateOnceDataLoaded(data);
 					}
 				}, 1);
 			};
-			var _adjustStoryLayout = function (data) {
+			var _adjustGridLayout = function () {
 
-				//  Make the calculations required to adjust the DOM
-				// _updateGridAndItemsObject(data);
-				_updateItemSize(data);
-
-				//  Position parent viewport
-				// elem.css({
-				// 	height: _story.height,
-				// 	width: _story.width,
-				// 	top: _story.y
-				// });
-
-				//  Glue items grid together
-				// _glueStoryItemsTogether(data);
+				//  Make the calculations required to adjust to DOM
+				_updateStoryViewport();
+				_updateStoryItems();
+				_glueStoryItemsTogether();
 			};
-			var _updateExistingItems = function (arr) {
+			var _storyItemContentHasUpdated = function (e, arr) {
 				var len = arr.length;
 				while (len--) {
 					_items[arr[len]].$el.addClass('updated');
