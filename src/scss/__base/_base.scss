@@ -47,6 +47,11 @@ iframe {
 	Global helpers
 */
 
+.hide {
+	pointer-events: none;
+	opacity: 0;
+}
+
 .disable {
 	pointer-events: none;
 }

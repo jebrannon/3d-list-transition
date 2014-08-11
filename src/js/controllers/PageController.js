@@ -230,7 +230,8 @@ var PageController = function ($scope, $window, $timeout) {
 		else {
 
 			if (!$scope.inited && data.length) {
-				$scope.$broadcast('ng_StoryGlue_inject', data, true);
+				$scope.$broadcast('ng_StoryGlue_inject', data);
+				$scope.$broadcast('ng_LoadingLayer_remove');
 				$scope.inited = true;
 			}
 			else if ($scope.inited && data.length) {
