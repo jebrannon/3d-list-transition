@@ -1,0 +1,23 @@
+/**
+ * @class css.config.breakpoints
+ *
+ * Here we define the device variables that are used throughout the stylesheet
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__base/_breakpoints.scss";
+ *
+ */
+
+
+/**
+ * Basic device list
+ * - Working of the principle of a 'mobile first layout' and inclusive queries.
+ * - Device is assumed to be mobile and other device parameters are included as required.
+ *
+ */
+
+$tablet: 600px;
+$desktop: 900px;
+$wide: 1200px;

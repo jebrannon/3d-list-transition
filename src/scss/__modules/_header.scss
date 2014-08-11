@@ -1,0 +1,21 @@
+/**
+ * @class css.modules.branding
+ *
+ * These styles define the layout of the page header.
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__modules/_header.scss";
+ *
+ */
+
+#header {
+	background-repeat: no-repeat;
+	background-size: 150px 49px;
+	height: 49px;
+	left: 20px;
+	position: fixed;
+	top: 20px;
+	width: 150px;
+}

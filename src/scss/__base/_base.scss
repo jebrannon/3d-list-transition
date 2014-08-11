@@ -1,0 +1,56 @@
+/**
+ * @class css.base.base
+ *
+ * This is for the remaining base/globally applied styles that cannot be defined in the other Base folder stylesheets (e.g. colours, fonts etc.)
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__base/base";
+ *
+ */
+
+
+/**
+ * Custom Resets
+ */
+ p, pre, blockquote, a, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+    margin:0;
+    padding:0;
+}
+
+
+/**
+ * body styling
+ */
+body {
+	overflow-x: hidden;
+}
+
+iframe {
+    border: 0;
+    max-width: 100%;
+}
+
+
+/**
+* Fix the box sizing
+*/
+
+*,
+*:after,
+*:before {
+}
+
+
+/*
+	Global helpers
+*/
+
+.disable {
+	pointer-events: none;
+}
+
+.prevent-scroll {
+	overflow: hidden;
+}

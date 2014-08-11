@@ -1,0 +1,27 @@
+/**
+ * @class css.mixins.retina
+ *
+ * Here we define retina specific mixins
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__mixins/_retina.scss";
+ *
+ */
+
+// Retina Image mixin
+// Credit goes to Chris Johnson (author of `Retina images with SASS`)
+// Usage:
+// .element {
+//     @include retina-background-image('file', 'png', 100px, 50px)
+// }
+
+@mixin retina-background-image($name, $ext, $width, $height) {
+	background-image: url($file + '.' + $type);
+	@media  only screen and (min-device-pixel-ratio: 1.5),   
+        only screen and (min-resolution: 192dpi) {  
+    background-image: url($file + '@2x.' + $type);
+    background-size: $width $height;
+  }
+}

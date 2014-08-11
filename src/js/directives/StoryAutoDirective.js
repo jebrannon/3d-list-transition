@@ -1,4 +1,4 @@
-app.directive('ngStoryAuto', ['$window', '$timeout', function($window, $timeout) {
+var StoryAutoDirective = function ($window, $timeout) {
 	return {
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
@@ -84,4 +84,5 @@ app.directive('ngStoryAuto', ['$window', '$timeout', function($window, $timeout)
 			scope.$on('ng_StoryAuto_stop', _handleEvent);
 		}
   };
-}]);
+};
+module.exports = StoryAutoDirective

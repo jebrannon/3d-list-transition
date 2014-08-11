@@ -1,0 +1,58 @@
+/**
+ * @class css.modules.loader
+ *
+ * These styles define the layout for the loading screen.
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__modules/_loader.scss";
+ *
+ */
+
+.loader {
+	display: table;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+
+	.loader-inner {
+
+		display: table-cell;
+		height: 100%;
+		pointer-events: none;
+		text-align: center;
+		vertical-align: middle;
+		width: 100%;
+
+		.spinner {
+			display: inline-block;
+			width: 60px;
+		  background-color: $color-one;
+		  height: 60px;
+  		// -webkit-animation: rotateplane 1.2s infinite ease-in-out;
+  		// animation: rotateplane 1.2s infinite ease-in-out;
+		}
+	}
+}
+
+@-webkit-keyframes rotateplane {
+  0% { -webkit-transform: perspective(120px) }
+  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+}
+
+@keyframes rotateplane {
+  0% { 
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+  } 50% { 
+    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+  } 100% { 
+    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+  }
+}

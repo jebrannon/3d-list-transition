@@ -1,0 +1,33 @@
+/**
+* @class css.main
+*
+* This is the core/primary stylesheet for the whole site, all other stylesheets are pulled in by this one.
+* It is mobile first so we declare all our base styles first add more through media queries
+* Credit goes to David Plunkett for a great SCSS Foundation (http://www.quirksmode.co.uk/).
+*
+* ## Usage
+* Add to your base html file in a conditional statement to not load it if you are using IE8 or less
+*
+*     <!--[if !lte IE 8]>
+*         <link rel='stylesheet' href='/path/to/file/syle.css') }}' />
+*     <![endif]-->
+*/
+
+// Import Mixin
+@import "__mixins/retina";
+@import "__mixins/media-queries";
+
+// Import Config Variables (to be used throughout the stylesheet)
+@import "__config/colours";
+@import "__config/breakpoints";
+@import "__config/other";
+
+// Import Base Styles (Media Queries are not located within these files)
+@import "__base/normalize";
+@import "__base/base";
+@import "__base/theme";
+
+//  Import Module styles
+@import "__modules/header";
+@import "__modules/story";
+@import "__modules/loader";

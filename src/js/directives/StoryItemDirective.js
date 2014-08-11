@@ -1,4 +1,4 @@
-	app.directive('ngStoryItem', ['$window', function($window) {
+var StoryItemDirective = function ($window) {
 	return {
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
@@ -187,4 +187,5 @@
 			scope.$on("ng_StoryItem_close", _handleEvent);
 		}
   };
-}]);
+};
+module.exports = StoryItemDirective;

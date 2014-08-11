@@ -1,0 +1,50 @@
+/**
+ * @class css.mixins.media-queries
+ *
+ * Here we define retina specific mixins
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__mixins/_media-queries.scss";
+ *
+ */
+
+
+// Media Query mixin
+// From: this breakpoint (inclusive)
+// To: that breakpoint (exclusive)
+// And: custom
+//
+// Usage:
+// .element {
+//     @include media-query($tablet) {
+//         color: red;
+//     }
+//     @include media-query($tablet, $desktop) {
+//         color: green;
+//     }
+//     @include media-query($tablet, $desktop, '(orientation: landscape)') {
+//         color: teal;
+//     }
+//     @include media-query(950px) {
+//         color: hotpink;
+//     }
+// }
+
+ @mixin media-query($from: false, $to: false, $and: false) {
+ 	$query: null;
+
+	// Responsive support is enabled, output rules inside @media queries
+	@if $from { $query: '(min-width: #{$from})'; }
+	@if $to { $query: '#{$query} and (max-width: #{$to})'; }
+	@if $and { $query: '#{$query} and #{$and}'; }
+	
+	// Format
+	$query: unquote(#{$query});
+
+	// Compiled query
+	@media screen and #{$query} {
+		@content;
+	}
+}

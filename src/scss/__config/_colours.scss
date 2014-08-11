@@ -1,0 +1,22 @@
+/**
+ * @class css.config.colours
+ *
+ * Here we define the colour variables that are used throughout the stylesheet
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__base/_colours.scss";
+ *
+ */
+
+
+/**
+ * Basic colours
+ *
+ */
+
+$color-one: rgb(215, 218, 89);
+$color-two: rgb(0, 0, 0);
+$color-three: #ff0066;
+$color-four: #ff6600;

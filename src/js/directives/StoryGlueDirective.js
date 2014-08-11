@@ -1,12 +1,10 @@
-app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($window, $interval, $timeout) {
+var StoryGlueDirective = function ($window, $interval, $timeout) {
 	return {
-		template: '<li id="{{item.id}}" class="my-list-item {{item.className}}" ng-repeat="item in items"><div class="my-list-inner"><div class="front">{{item.title}}</div><div class="back">{{item.title}}</div></div></li>',
-		// templateUrl: '../templates/GridItemView.html',
+		templateUrl: '/html/GridItemView.html',
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
 			var _$window = angular.element($window);
 			var _$body = scope.isIE ? $('html') : $('body');   //  This needs to be 'HTML' for IE.
-			var _inited = false;
 			var _adjust = attrs.ngStoryGlueAdjust ? attrs.ngStoryGlueAdjust : true;
 			var _transEndEventNames = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd';
 			var _rows = attrs.ngStoryGlueRows ? Number(attrs.ngStoryGlueRows) : 0;
@@ -22,14 +20,14 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 			};
 
 			//  Methods
-			var _handleEvent = function (e, attr) {
+			var _handleEvent = function (e, attr, inited) {
 				var eventType = e.type ? e.type : e.name;
 				switch(eventType) {
 					case 'debouncedresize':
 						_updateStoryLayout();
 						break;
 					case 'ng_StoryGlue_inject':
-						_checkItemsHaveUpdated(attr);
+						_checkItemsHaveUpdated(attr, inited);
 						break;
 					case 'ng_StoryGlue_update':
 						_storyItemContentHasUpdated(attr);
@@ -106,10 +104,11 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				}
 			};
 			var _updateStoryItemsReferenceObject = function (data) {
+				if (!data) data = scope.items;
 
 				//  Existing 'items' object is out of date
 				if (_items.length !== data.length) {
-					var $_items = elem.find('.my-list-item');
+					var $_items = elem.find(_selector);
 					var $_item = false;
 					var len = $_items.length;
 					var inc = 0;
@@ -189,17 +188,11 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 				_updateStoryItemsReferenceObject(data);
 				_updateStoryLayout();
 
-				//  Initial animation
-				if (!_inited) {
-					// _$body.scrollLeft((_story.width - _$window.width())/2);
-					// _$body.animate({scrollLeft: 0}, 2000);
-					_inited = true;
-				}
-
 				//  The DOM is ready
 				scope.$emit("ng_StoryGlue_ready");
 			};
-			var _checkItemsHaveUpdated = function (data) {
+			var _checkItemsHaveUpdated = function (data, inited) {
+
 				/*  This is a horrible hack fix to ensure the DOM is ready for manipulation one data maping has occured.
 				    the 'link' function we are currently in is fired when the template is cloned but not upon template render.
 				    this would normally be fine for most manipulation but the grid need to instantaneously adjust on render  */
@@ -233,4 +226,5 @@ app.directive('ngStoryGlue', ['$window', '$interval', '$timeout', function($wind
 			scope.$on("ng_StoryGlue_update", _handleEvent);
 		}
   };
-}]);
+};
+module.exports = StoryGlueDirective;

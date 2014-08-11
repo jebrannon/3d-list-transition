@@ -1,0 +1,24 @@
+/**
+ * @class css.base.theme
+ *
+ * These styles define the main theme for the site, this includes colours, fonts, basic layout.
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__base/_theme.scss";
+ *
+ */
+
+.theme {
+ 	// background-color: $color-one;
+ 	@include media-query($tablet) {
+ 		// background-color: $color-two;
+ 	}
+  @include media-query($desktop) {
+ 		// background-color: $color-three;
+ 	}
+ 	@include media-query($wide) {
+ 		// background-color: $color-four;
+ 	}
+}

@@ -1,4 +1,4 @@
-app.directive('ngStoryInteraction', ['$window', '$timeout', function($window, $timeout) {
+var StoryInteractionDirective = function ($window, $timeout) {
 	return {
 		restrict: 'AE',
 		link: function(scope, elem, attrs) {
@@ -7,6 +7,8 @@ app.directive('ngStoryInteraction', ['$window', '$timeout', function($window, $t
 
 			//  Methods
 			var _handleEvent = function (e, attr) {
+
+
 				var _eventType = e.type ? e.type : e.name;
 				switch(_eventType) {
 					case 'mousemove':
@@ -42,4 +44,5 @@ app.directive('ngStoryInteraction', ['$window', '$timeout', function($window, $t
 			elem.on('mousemove', _handleEvent);
 		}
   };
-}]);
+};
+module.exports = StoryInteractionDirective;

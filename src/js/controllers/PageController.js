@@ -1,4 +1,4 @@
-app.controller("pageController", function ($scope, $window, $timeout) {
+var PageController = function ($scope, $window, $timeout) {
 	var updateMemory = false;
 	var sampleData = [
 		{
@@ -208,19 +208,34 @@ app.controller("pageController", function ($scope, $window, $timeout) {
 		}
 		return _clone;
 	};
+	var simulateFirstLoad = function () {
+		$timeout(function () {
+			$scope.items = shuffleArray(sampleData);
+		}, 3000)
+	};
+	simulateFirstLoad();
 
 	//  Within scope
 	$scope.isIE = (navigator.userAgent.indexOf("MSIE") != -1 || navigator.appVersion.indexOf('Trident/') > 0);
 	$scope.auto = true;
-	$scope.items = shuffleArray(sampleData);
+	$scope.inited = false;
+	$scope.items = [];
 	$scope.order = sampleData;
+
 	$scope.$watch('items', function (data) {
 		if (updateMemory) {
 			$scope.$broadcast('ng_StoryGlue_update', updateMemory);
 			updateMemory = false;
 		}
 		else {
-			$scope.$broadcast('ng_StoryGlue_inject', data);
+
+			if (!$scope.inited && data.length) {
+				$scope.$broadcast('ng_StoryGlue_inject', data, true);
+				$scope.inited = true;
+			}
+			else if ($scope.inited && data.length) {
+				$scope.$broadcast('ng_StoryGlue_inject', data);
+			}
 		}
   }, true);
   $scope.$on('ng_StoryAuto_stop', function () {
@@ -230,6 +245,8 @@ app.controller("pageController", function ($scope, $window, $timeout) {
   	$scope.auto = true;
   });
   
+
+
   //  Temporary
 	// $timeout(function() {
  //  	$scope.items.push(
@@ -312,4 +329,6 @@ app.controller("pageController", function ($scope, $window, $timeout) {
  //  		updateMemory = [8];
  //  	}, 500);
  //  }, 3000);
-});
+};
+
+module.exports = PageController;

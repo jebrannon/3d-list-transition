@@ -1,0 +1,155 @@
+/**
+ * @class css.modules.story
+ *
+ * These styles define the layout and animation of the story grid.
+ *
+ * ## Usage
+ * Import into your main file using
+ *
+ *     @import "__modules/_story.scss";
+ *
+ */
+
+#story {
+	height: 100%;
+	position: relative;
+	width: 100%;
+
+	* {
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	ul,
+	li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.my-list {
+		position: relative;
+		background-color: lightgrey;
+
+		.my-list-item {
+			padding: 5px;
+			position: absolute;
+			z-index: 1;
+
+			.my-list-inner,
+			.front,
+			.back {
+				height: 100%;
+				pointer-events: none;
+				position: relative;
+				width: 100%;
+			}	
+
+			.front,
+			.back {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			.front {
+				background: red;
+			}
+
+			.back {
+				background: blue;
+			}
+
+		}
+	}
+
+	/*
+		Animation specific
+	*/
+	&.animate,
+	.animate {
+
+		.my-list-item {
+			-moz-perspective: 1000;
+			-moz-transform-style: preserve-3d;
+			-moz-transform-style: preserve-3d; 
+			-moz-transform: perspective(1000px);
+			-moz-transition: $speed-one;
+			-ms-perspective: 1000;
+			-ms-transform-style: preserve-3d;
+			-ms-transform-style: preserve-3d;
+			-ms-transform: perspective(1000px);
+			-ms-transition: $speed-one;
+			-webkit-perspective: 1000;
+			-webkit-transform-style: preserve-3d;
+			-webkit-transition: $speed-one;
+			perspective: 1000;
+			transform-style: preserve-3d;
+			transition: .5s;
+
+				.my-list-inner,
+				.front,
+				.back {
+					-moz-transform-style: preserve-3d;
+					-moz-transform: perspective(1000px);
+					-moz-transition: $speed-one;
+					-ms-transform-style: preserve-3d;
+					-ms-transition: $speed-one;
+					-webkit-transform-style: preserve-3d;
+					-webkit-transition: $speed-one;
+					transform-style: preserve-3d;
+					transition: $speed-one;
+				}
+
+				.front,
+				.back {
+					-moz-backface-visibility: hidden;
+					-ms-backface-visibility: hidden;
+					-webkit-backface-visibility: hidden;
+					backface-visibility: hidden;
+				}
+
+				.front {
+					-moz-transform: rotateY(0deg);
+					-ms-transform: rotateY(0deg);
+					-o-transform: rotateY(0deg);
+					-webkit-transform: rotateY(0deg);
+					transform: rotateY(0deg);
+				}
+
+				.back {
+					-moz-transform: rotateY(-180deg);
+					-ms-transform: rotateY(-180deg);
+					-o-transform: rotateY(-180deg);
+					-webkit-transform: rotateY(-180deg);
+					transform: rotateY(-180deg);
+				}
+
+				&.focus {
+					pointer-events: auto;
+					z-index: 100;
+
+					&.media {
+
+						.front {
+							-moz-transform: rotateY(180deg);
+							-ms-transform: rotateY(180deg);
+							-o-transform: rotateY(180deg);
+							-webkit-transform: rotateY(180deg);
+							transform: rotateY(180deg);
+						}
+
+						.back {
+							-moz-transform: rotateY(0deg);
+							-ms-transform: rotateY(0deg);
+							-o-transform: rotateY(0deg);
+							-webkit-transform: rotateY(0deg);
+							transform: rotateY(0deg);
+						}
+					}
+				}
+		}
+	}
+}
