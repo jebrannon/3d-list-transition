@@ -1,1 +1,14 @@
-<li id="{{item.id}}" class="my-list-item {{item.className}}" ng-repeat="item in items"><div class="my-list-inner"><div class="front">{{item.title}}</div><div class="back">{{item.title}}</div></div></li>
+<li id="{{item.id}}" class="my-list-item {{item.className}}" ng-repeat="item in items">
+	
+	<!--  Media - Double sided content  -->
+	<div class="my-list-inner" ng-if="item.className == 'media'">
+		<div class="back">{{item.title}}</div>
+		<div class="front">{{item.title}}</div>
+	</div>
+
+	<!--  Flat - Single sided content  -->
+	<div class="my-list-inner" ng-if="item.className == 'flat'">
+		{{item.title}}
+	</div>
+
+</li>

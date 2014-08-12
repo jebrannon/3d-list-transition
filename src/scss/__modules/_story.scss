@@ -31,35 +31,53 @@
 
 	.my-list {
 		position: relative;
-		background-color: lightgrey;
 
 		.my-list-item {
 			padding: 5px;
 			position: absolute;
 			z-index: 1;
 
-			.my-list-inner,
-			.front,
-			.back {
+			.my-list-inner {
 				height: 100%;
 				pointer-events: none;
 				position: relative;
 				width: 100%;
-			}	
-
-			.front,
-			.back {
-				position: absolute;
-				top: 0;
-				left: 0;
 			}
 
-			.front {
-				background: red;
+
+			/*
+				Single-sided styles
+			*/
+			&.flat {
+
+				.my-list-inner {
+					background-color: $color-two;
+				}
 			}
 
-			.back {
-				background: blue;
+
+			/*
+				Double-sided styles
+			*/
+			&.media {
+
+				.front,
+				.back {
+					height: 100%;
+					left: 0;
+					pointer-events: none;
+					position: absolute;
+					top: 0;
+					width: 100%;
+				}
+
+				.front {
+					background-color: $color-one;
+				}
+
+				.back {
+					background-color: $color-two;
+				}
 			}
 
 		}

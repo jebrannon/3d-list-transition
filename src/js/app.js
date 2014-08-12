@@ -15,5 +15,4 @@ app.directive('ngStoryItem', ['$window', StoryItemDirective]);
 app.directive('ngStoryInteraction', ['$window', '$timeout', StoryInteractionDirective]);
 app.directive('ngStoryAuto', ['$window', '$timeout', StoryAutoDirective]);
 app.directive('ngLoaderLayer', ['$window', LoaderLayerDirective]);
-
 app.controller('PageController', ['$scope', '$window', '$timeout', PageController]);
